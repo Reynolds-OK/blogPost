@@ -1,0 +1,15 @@
+{% extends 'parent.html' %}
+{% load static from static %}
+
+{% block content%}
+    <div class="create_art">
+        <h2>Create a New Article</h2>
+        <form action="{% url 'articles:create' %}" class="site-form" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            <p>**Type title in lowercase</p>
+            {{form}}
+            <input type="submit" id='submit' value="Create">
+        </form>
+    </div>
+    <script src="{% static 'js/slugify.js' %}"></script>
+{%endblock%}

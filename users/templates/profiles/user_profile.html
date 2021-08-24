@@ -1,0 +1,71 @@
+{% extends 'parent.html' %}
+{% load static from static %}
+
+{% block content %}
+<div class="profile">
+    <h2>YOUR PROFILE</h2>
+    <form action="{% url 'profile:user_profile' username=user.username id=user.id %}" class="site-form" method="post" enctype="multipart/form-data">
+        {%csrf_token%}
+        <div class='text-center'>
+            {% if profile.image%}
+                <img src="{{profile.image.url}}" alt="Image" height="100px" width="100px">
+                <label for="img">Change Image</label>
+                <input type="file" accept='image/' id='img' name="img" class='ph' value='{{profile.image.name}}'>
+            {% else %}
+                <img src="{% static 'user.png' %}" alt="Image" height="100px" width="100px">
+                <label for="img">Change Image</label>
+                <input type="file" accept='image/' id='img' name="img" value=''>
+            {% endif %}
+        </div>
+        <label for="f">First Name</label>
+        <input type="text" id='first' name='first' value='{{user.first_name}}'>
+        <label for="s">Last Name</label>
+        <input type="text" id='second' name='second' value='{{user.last_name}}'>
+        <label for="u">Username</label>
+        <input type="text" id='username' name='username' value='{{user.username}}'>
+        <label for="gen">Gender</label>
+        {% if profile.gender == 'male' %}
+            <select id="gen" name='gender'>
+                <option selected value='male'>Male</option>
+                <option value='female'>Female</option>
+                <option value='none'>None</option>
+            </select>
+        {% elif profile.gender == 'female' %}
+            <select id="gen" name='gender'>
+                <option value='male'>Male</option>
+                <option selected value='female'>Female</option>
+                <option value='none'>None</option>
+            </select>
+        {% else %}
+            <select id="gen" name='gender'>
+                <option selected disabled>Choose Gender</option>
+                <option value='male'>Male</option>
+                <option value='female'>Female</option>
+                <option value='none'>None</option>
+            </select>
+        {% endif %}
+        <label for="intro">Introduction</label>
+        <input type="text" id='intro' name="intro" value='{{profile.intro}}'>
+        <label for="e">Email</label>
+        <input type="email" id='e' name="email" value='{{user.email}}'>
+        <input id='submit' type="submit" value='Okay'>
+    </form>
+</div>
+    <a href="{% url 'profile:password' id=user.id %}">Change Password?</a>
+    <p>Date joined: {{user.date_joined}}</p>  
+    <hr>
+    <div class='overflow'>
+        {% for article in articles %}
+            <div class="article2">
+                <img src="{{article.thumbnail.url}}" alt="thumbail" height="80px" width="80px">
+                <h2><a href="{% url 'articles:detail' slug=article.slug id=article.id %}">{{article.f_title}}</a></h2>
+                <p>{{article.snippet}}</p>
+                <p class='date'>{{article.date}}</p>
+                <h5><a href="{url 'articles:delete' id=article.id }">Delete article</a></h5>
+                <div class="author">
+                    {{article.author.username}}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

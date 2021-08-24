@@ -1,0 +1,132 @@
+{% extends 'parent.html' %}
+{% load static from static %}
+
+{% block content%}
+     <div class="signup_v4 card-body">
+        <ul class="nav nav-pills" id="myTab" role="tablist">
+            <li class="nav-item"> 
+                <a class="nav-link show" id="login-tab" data-toggle="pill" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a> 
+            </li>
+            <li class="nav-item"> 
+                <a class="nav-link show" id="register-tab" data-toggle="pill" href="#register" role="tab" aria-controls="register" aria-selected="false">Register</a> 
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade active" id="login" role="tabpanel" aria-labelledby="login-tab">
+                <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase;">Login</h4>
+                <form action="{% url 'accounts:login' %}" method="post">
+                    {%csrf_token%}
+                    <div class="form-row">
+                        {% for message in messages %}
+                            <p style="color: red; font-weight: bold;">** {{message}}</p>
+                        {% endfor %}
+                        <div class="form-group col-md-12"> 
+                            <label for="inputName">Your Username</label> 
+                            <input type="text" class="form-control" id="inputEmail4" name='username' placeholder="Enter your username" required> 
+                        </div>
+                        <div class="form-group col-md-12"> 
+                            <label for="inputName">Your Password</label> 
+                            <input type="password" class="form-control" id="inputPassword4" name='password' placeholder="Enter your password" required> 
+                        </div>
+                        {%if request.GET.next%}
+                        <input type="hidden" name="next" value="{{request.GET.next}}">
+                        {% endif %}
+                        <div class="form-group col-md-12">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <div class="col-xs-6"><a href="#" target="_blank">Forgot Password?</a></div>
+                                <div class="col-xs-6 mt-2 mb-3">
+                                    <button class="btn btn-primary" type="submit">Login</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="social-area">
+                    <h3 class="title">Or</h3>
+                    <p class="text">Sign In with social media</p>
+                    <ul class="social-links">
+                        <li> <a href="#"> <i class="fab fa-facebook-f"></i> </a> </li>
+                        <li> <a href="#"> <i class="fab fa-google-plus-g"></i> </a> </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
+                <h4 class="text-center mt-4 mb-4" style="text-transform: uppercase;">SIGN UP</h4>
+                <form method="post" action="{% url 'accounts:signup' %}" enctype="multipart/form-data">
+                    {%csrf_token%}
+                    <div class="form-row">
+                        <div class="text-center">
+                            <img src="{% static 'user.png' %}" alt="Image" height="100px" width="100px">
+                            <input type="file" accept='image/' id='img' name="img" value='' class='ph'> <br>
+                            <label for="img">Set Image</label>
+                            <p>Image should not exceeed 20mb</p>
+                        </div>
+                        <div class="form-group col-md-12"> 
+                            <label for="first">First name</label> 
+                            <input type="text" class="form-control" id="first" name="first" placeholder="Enter your name" required> 
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="second">Surname</label>
+                            <input type="text" class="form-control" id="second" name="second" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group col-md-12"> 
+                            <label for="username" class>Username</label> 
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required> 
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="bio">A little about you</label>
+                            <input type="text" class="form-control" id="bio" name='bio' placeholder="Biography" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12"> 
+                            <label for="email">Email Address</label> 
+                            <input type="email" class="form-control" name='email' id="email" placeholder="Enter your email address" required> 
+                        </div>
+                        <div class="form-group col-md-12"> 
+                            <label for="password1">Password</label> 
+                            <input type="password" class="form-control" name='password1' id="password1" placeholder="Enter your password" required> 
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="password2">Confirm Password</label>
+                            <input type="password" class="form-control" name='password2' id="password2" placeholder="Confirm password" required>
+                        </div>
+                        {% for message in messages %}
+                            <p style="color: red; font-weight: bold;">** {{message}}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12"> 
+                            <label for="inputName">Gender</label> 
+                            <select id="gender" name='gender' class="form-control" required>
+                                <option selected disabled>Choose gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="none">None</option>
+                            </select> 
+                        </div>
+                    </div>
+                    <div class="form-group form-row">
+                        <div class="col-xs-6">  
+                            <input type="checkbox" required>
+                                I agree with <a href="#" target="_blank">terms and conditions</a> 
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <button class="btn btn-primary mt-3 mt-sm-0" type="submit">Sign Up</button>
+                    </div>
+                </form> 
+                <div class="social-area col-xs-12">
+                    <h3 class="title">Or</h3>
+                    <p class="text">Sign In with social media</p>
+                    <ul class="social-links">
+                        <li> <a href="#"> <i class="fab fa-facebook-f"></i> </a> </li>
+                        <li> <a href="#"> <i class="fab fa-google-plus-g"></i> </a> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{%endblock%}

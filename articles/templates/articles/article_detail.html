@@ -1,0 +1,44 @@
+{%extends 'parent.html' %}
+
+{% block content%}
+<div class="article-detail">
+    <div class="article_detail">
+        <h2>{{article.f_title}}</h2>
+        <div class="enclose">
+            <img src="{{article.pic.url}}" alt="Connecting..." height="100px" width="100px">
+            <ul>
+                <li class='likes'>
+                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom"
+                        title="I like this">
+                        <a href="{% url 'articles:likes' slug=article.slug  %}" class="fa fa-thumbs-o-up"></a>
+                        {{article.likes}}
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Share">
+                        <a href="#" class="fa fa-share-square-o"></a>
+                    </button>
+                </li>
+            </ul>
+            <p class="date">{{article.date}}</p>
+            <p class="author">by {{article.author.username}}</p>
+        </div>
+        <p class='body'>{{article.body}}</p>
+    </div>
+    <div class="comments">
+        <h3>Let us know your comments and suggestions</h3>
+        {%for comment in comments%}
+            <div class="comment">
+                    <p class="heading">{{comment.author.username}} || {{comment.date}}</p>
+                    <p class="sugg">Comment: {{comment.comment}}</p>
+            </div>
+        {%endfor%}
+        <form action="{% url 'articles:comments' id=article.id %}" method="post">
+            {%csrf_token%}
+            <label for="new">New Comment</label>
+            {{c_form}}
+            <input type="submit">
+        </form>
+    </div>
+</div>
+{%endblock%}

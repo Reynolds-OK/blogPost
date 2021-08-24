@@ -1,0 +1,71 @@
+{% extends 'parent.html' %}
+{% load static from static %}
+
+{% block content %}
+    <div class='col-sm-9'>
+        <h1 class='text-center'>Article List</h1>
+        <div class="articles">
+            {% for article in articles %}
+                <div class="article">
+                    <img src="{{article.thumbnail.url}}" alt="thumbail">
+                    <ul>
+                        <li class='likes'>
+                            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom"
+                                title="I like this">
+                                <a href="{% url 'articles:likes' slug=article.slug  %}" class="fa fa-thumbs-o-up"></a>
+                                {{article.likes}}
+                            </button>
+                        </li>
+                        <li class='share'>
+                            <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Share">
+                                <a href="#" class="fa fa-share-square-o"></a>
+                            </button>
+                        </li>
+                    </ul>
+                    <h2><a href="{% url 'articles:detail' slug=article.slug id=article.id %}">{{article.f_title}}</a></h2>
+                    <p>{{article.snippet}}</p>
+                    <p class='added'>Added on: {{article.date}}</p>
+                    <div class="author">
+                        added by {{article.author.username}}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="other col-sm-3">
+        <form action="{% url 'articles:search'%}" method="post">
+            {%csrf_token%}
+            <select name="choose" id="choose">
+                <option value="none" selected disabled>None</option>
+                <option value="author">Author</option>
+                <option value="article">Article</option>
+            </select>
+            <input type="text" name='search' id='search' placeholder="Search">
+            <button>
+                <img src="{% static 'search.png' %}"alt="Search">
+            </button>     
+        </form>
+
+        <!-- space for ads in the future -->
+        <div class="inner">
+            <div class="authors">
+                <h2>Authors</h2>
+                <ul>    
+                    {% for user in users%}
+                    <li>{{user.username}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="recent">
+                <h2>Recent Posts</h2>
+                <ul>
+                    {% for write in writes %}
+                    <li><a href="{% url 'articles:detail' slug=write.slug id=write.id %}">{{write.title}}</a></li>
+                    {%endfor%}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/onclick.js' %}"></script>
+{% endblock %}
